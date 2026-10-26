@@ -86,7 +86,30 @@ function normalizeSecret(input){
  }
  return changed?{...makeSecret(),...input,indices:input.indices||{},questions}:input;
 }
-function normalizeState(input){return input&&!finals.includes(input.finalCategory)?{...input,finalCategory:finals[0]}:input;}
+// Firebase/older saved shows may lack fields added in later versions.
+// Normalize public data before rendering without overwriting existing points.
+function normalizeState(input){
+ if(!input||typeof input!=='object'||Array.isArray(input))return null;
+ const base=makeState();
+ const record=(value,fallback)=>value&&typeof value==='object'&&!Array.isArray(value)?{...fallback,...value}:{...fallback};
+ const teams=record(input.teams,base.teams);
+ const finalCards=record(input.finalCards,base.finalCards);
+ return {
+  ...base,...input,
+  teamNames:record(input.teamNames,base.teamNames),
+  points:record(input.points,base.points),
+  scores:record(input.scores,base.scores),
+  gameScores:record(input.gameScores,base.gameScores),
+  results:record(input.results,base.results),
+  teams:{blue:Array.isArray(teams.blue)?teams.blue:[],orange:Array.isArray(teams.orange)?teams.orange:[]},
+  estimatePenalties:record(input.estimatePenalties,base.estimatePenalties),
+  timing:record(input.timing,base.timing),
+  finalCards:{blue:Array.isArray(finalCards.blue)?finalCards.blue:[],orange:Array.isArray(finalCards.orange)?finalCards.orange:[]},
+  soundEvent:record(input.soundEvent,base.soundEvent),
+  options:Array.isArray(input.options)?input.options:[],
+  finalCategory:finals.includes(input.finalCategory)?input.finalCategory:finals[0]
+ };
+}
 const makeState=()=>({brand:'MÁLAGA GAMES',teamNames:{blue:'Team Blau',orange:'Team Orange'},points:{blue:0,orange:0},scores:{blue:0,orange:0},gameScores:{},results:{},activeGame:0,screen:'intro',progress:0,round:1,
   prompt:'',options:[],questionKey:'',answerRevealed:false,shownAnswer:'',buzzOpen:false,answerOpen:false,buzzWinning:null,timerEnd:0,wheelAngle:0,wheelFrom:0,wheelCategory:'',wheelSpinning:false,teams:{blue:[],orange:[]},nextDrawTeam:'blue',drawFeedback:'',drawFeedbackName:'',
   estimatePenalties:{blue:0,orange:0},estimateLast:null,estScale:1,timing:{blue:-1,orange:-1},finalCards:{blue:[],orange:[]},finalCategory:finals[0],wagerBase:null,wagerResult:null,
