@@ -6,8 +6,8 @@ const ROOM=(PARAMS.get('room')||'MALAGA26').toUpperCase().replace(/[^A-Z0-9-]/g,
 const VIEW=['tv','player','host'].includes(PARAMS.get('view'))?PARAMS.get('view'):'host';
 const BASE=location.origin+location.pathname;
 const link=(view)=>`${BASE}?room=${ROOM}&view=${view}`;
-const categories=['Natur','Geschichte','Sprachen','Politik','Sport','Naturwissenschaften','Film & Fernsehen'];
-const wheelLabels=['Natur','Geschichte','Sprachen','Politik','Sport','Naturwissen-<br>schaften','Film &<br>Fernsehen'];
+const categories=['Geografie','Geschichte','Sprachen','Politik','Sport','Naturwissenschaften','Film & Fernsehen'];
+const wheelLabels=['Geo-<br>grafie'','Geschichte','Sprachen','Politik','Sport','Naturwissen-<br>schaften','Film &<br>Fernsehen'];
 const finals=[...categories]; // Eine gemeinsame Kategorienliste für Glücksrad und Sammelkarten-Finale.
 const drawKey=category=>'teams:'+category;
 const finalCount=cards=>(cards||[]).filter(c=>finals.includes(c)).length;
