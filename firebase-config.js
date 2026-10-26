@@ -4,7 +4,7 @@
 window.MALAGA_FIREBASE_CONFIG = {
   apiKey: "AIzaSyBN7pbHKx1VMt35QcPWecH11oLEQVJiDAQ",
   authDomain: "malaga-games.firebaseapp.com",
-  databaseURL: "",
+  databaseURL: "https://malaga-games-default-rtdb.europe-west1.firebasedatabase.app/",
   projectId: "malaga-games",
   appId: "1:973122270457:web:0bee08102da557bc531e28"
 };
